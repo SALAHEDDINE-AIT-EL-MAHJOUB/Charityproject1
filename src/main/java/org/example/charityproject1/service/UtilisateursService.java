@@ -1,0 +1,44 @@
+package org.example.charityproject1.service;
+
+import org.example.charityproject1.model.Utilisateurs;
+import org.example.charityproject1.repository.UtilisateursRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UtilisateursService {
+
+    @Autowired
+    private UtilisateursRepository utilisateursRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // Register a new user
+    public Utilisateurs registerUser(Utilisateurs utilisateur) {
+        // Check if email is already used
+        if (utilisateursRepository.existsByEmail(utilisateur.getEmail())) {
+            throw new RuntimeException("Email déjà utilisé");
+        }
+
+        // Hash the password
+        utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
+
+        // Save the user
+        return utilisateursRepository.save(utilisateur);
+    }
+
+    // Authenticate a user
+    public Utilisateurs authenticateUser(String email, String password) {
+        Utilisateurs utilisateur = utilisateursRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        // Verify the password
+        if (!passwordEncoder.matches(password, utilisateur.getPassword())) {
+            throw new RuntimeException("Mot de passe incorrect");
+        }
+
+        return utilisateur;
+    }
+}
