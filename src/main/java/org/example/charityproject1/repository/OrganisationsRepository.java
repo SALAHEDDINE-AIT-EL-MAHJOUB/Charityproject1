@@ -5,17 +5,20 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrganisationsRepository extends MongoRepository<Organisations, String> {
-    // Find organisations by name (case-insensitive search)
-    List<Organisations> findByNom(String nom);
 
-    // Find organisations by validation status
-    List<Organisations> findByValideParAdmin(boolean valideParAdmin);
+    // Find organisation by numeroIdentif (unique identifier)
+    Optional<Organisations> findByNumeroIdentif(String numeroIdentif);
 
-    // 🔹 Find organizations that have created charity actions
-    @Query("{ 'charityActions' : { $exists: true, $not: { $size: 0 } } }")
-    List<Organisations> findOrganizationsWithCharityActions();
+    // Find organisations by legal address (adresseLegale)
+    List<Organisations> findByAdresseLegale(String adresseLegale);
 
+    // Check if a numeroIdentif is already used
+    boolean existsByNumeroIdentif(String numeroIdentif);
 
+    // Find organisations that have at least one charity action
+    @Query("{ 'historiqueActionsCharite' : { $exists: true, $not: { $size: 0 } } }")
+    List<Organisations> findOrganisationsWithCharityActions();
 }

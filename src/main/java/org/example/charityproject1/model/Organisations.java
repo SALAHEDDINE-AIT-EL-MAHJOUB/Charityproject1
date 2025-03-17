@@ -1,5 +1,6 @@
 package org.example.charityproject1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -32,6 +33,11 @@ public class Organisations {
 
     @Size(max = 500, message = "La description ne doit pas dépasser 500 caractères")
     private String description;
+
+    @NotBlank(message = "Le mot de passe est obligatoire")
+    @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
+    @JsonIgnore // Hide password in API responses
+    private String password;
 
     private boolean valideParAdmin; // Indicates if the profile is validated by a super-admin
 
@@ -109,6 +115,14 @@ public class Organisations {
 
     public void setActionsCharite(List<ActionCharite> actionsCharite) {
         this.historiqueActionsCharite = actionsCharite;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isValideParAdmin() {

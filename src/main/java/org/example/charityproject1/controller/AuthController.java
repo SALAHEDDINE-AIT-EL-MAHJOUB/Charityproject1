@@ -1,8 +1,11 @@
 package org.example.charityproject1.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.charityproject1.model.Utilisateurs;
 import org.example.charityproject1.service.UtilisateursService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,34 +64,12 @@ public class AuthController {
     public String showLoginForm() {
         return "login";
     }
+
+
     @PostMapping("/login")
-    public String loginUser(
-            @RequestParam String email,
-            @RequestParam String password,
-            Model model,
-            HttpSession session // Add HttpSession to manage user session
-    ) {
-        try {
-            System.out.println("Attempting to login user: " + email);
-
-            // Validate email and password
-            if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-                throw new RuntimeException("Email and password are required.");
-            }
-
-            // Authenticate the user
-            Utilisateurs utilisateur = utilisateursService.authenticateUser(email, password);
-            System.out.println("User logged in successfully: " + email);
-
-            // Store the user in the session
-            session.setAttribute("utilisateur", utilisateur);
-
-            // Redirect to the dashboard
-            return "redirect:/dashboard";
-        } catch (RuntimeException e) {
-            System.out.println("Login failed for user: " + email + ", Error: " + e.getMessage());
-            model.addAttribute("error", e.getMessage());
-            return "login";
-        }
+    public String loginUser() {
+        // Spring Security will handle login and redirection after authentication
+        return "redirect:/dashboard"; // You don't need to manually authenticate the user here
     }
+
 }
