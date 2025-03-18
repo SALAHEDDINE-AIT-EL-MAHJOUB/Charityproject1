@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Super Admin</title>
+</head>
+<body>
+<h1>Connexion Super Admin</h1>
+
+<div th:if="${message}" th:text="${message}" style="color: red;"></div>
+
+<form action="/auth/login/superadmin" method="POST">
+    <div>
+        <label for="username">Email :</label>
+        <input type="email" id="username" name="username" required />
+    </div>
+    <div>
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" name="password" required />
+    </div>
+    <div>
+        <button type="submit">Se connecter</button>
+    </div>
+</form>
+
+<p>
+    Vous n'avez pas de compte ? <a th:href="@{/auth/register/superadmin}">Inscrivez-vous ici</a>.
+</p>
+</body>
+</html>

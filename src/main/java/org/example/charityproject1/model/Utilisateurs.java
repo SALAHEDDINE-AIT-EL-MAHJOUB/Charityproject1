@@ -4,6 +4,7 @@ package org.example.charityproject1.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ public class Utilisateurs {
 
     @NotBlank(message = "L'email est obligatoire")
     @Email(message = "L'email doit être valide")
+    @Indexed(unique = true)
     private String email;
 
     @NotBlank(message = "Le mot de passe est obligatoire")

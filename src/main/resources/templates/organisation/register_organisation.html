@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Organisation</title>
+</head>
+<body>
+<h1>Inscription Organisation</h1>
+
+<form th:action="@{/auth/register/organisation}" method="post" enctype="multipart/form-data">
+
+
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="nom" required><br><br>
+
+    <label for="adresseLegale">Adresse Légale :</label>
+    <input type="text" id="adresseLegale" name="adresseLegale" required><br><br>
+
+    <label for="numeroIdentif">Numéro d'Identification :</label>
+    <input type="text" id="numeroIdentif" name="numeroIdentif" required><br><br>
+
+    <label for="description">Description :</label>
+    <input type="text" id="description" name="description" required><br><br>
+
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <label for="contactPrincipal">Contact Principal :</label>
+    <input type="text" id="contactPrincipal" name="contactPrincipal" required><br><br>
+    <label for="logo">Logo :</label>
+    <input type="file" id="logo" name="logo" required><br><br>
+
+    <button type="submit">S'inscrire</button>
+</form>
+
+<p th:if="${message != null}" th:text="${message}" style="color: red;"></p>
+
+<p>
+    Vous avez déjà un compte ? <a th:href="@{/auth/login/organisation}">Connectez-vous ici</a>.
+</p>
+</body>
+</html>

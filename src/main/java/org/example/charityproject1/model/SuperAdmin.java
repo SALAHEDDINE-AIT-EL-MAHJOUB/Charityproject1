@@ -28,6 +28,7 @@ public class SuperAdmin implements UserDetails {
     @NotBlank(message = "Le mot de passe est obligatoire")
     @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
     private String password;
+    private boolean isAdmin = true;
 
     // Getters et setters
     public String getIdAdmin() {
@@ -58,11 +59,19 @@ public class SuperAdmin implements UserDetails {
         this.password = password;
     }
 
-    // Méthodes de UserDetails
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+    // UserDetails methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_SUPER_ADMIN"));
     }
+
 
     @Override
     public String getPassword() {

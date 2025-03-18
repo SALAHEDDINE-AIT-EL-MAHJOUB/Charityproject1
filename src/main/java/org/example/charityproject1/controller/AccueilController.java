@@ -8,6 +8,6 @@ public class AccueilController {
     // Mapping the root URL to the "accueil" page
     @GetMapping("/")
     public String afficherPageAccueil() {
-        return "accueil";  // This will load the "accueil.html" page from the templates directory
+        return "/accueil";  // This will load the "accueil.html" page from the templates directory
     }
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+</head>
+<body>
+
+<span th:if="${user != null}" th:text="${user.nom}">Name</span>
+
+
+<p>Email: <span th:text="${user.email}">Email</span></p>
+<p>Phone: <span th:text="${user.telephone}">Phone</span></p>
+<p>Location: <span th:text="${user.localisation}">Location</span></p>
+<img th:if="${user.logoPath != null}"
+     th:src="'data:image/png;base64,' + ${user.logoPath}"
+     alt="User Logo" width="150"/>
+
+
+<form action="/logout" method="POST">
+  <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>

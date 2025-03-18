@@ -29,16 +29,11 @@ public class UtilisateursService {
         return utilisateursRepository.save(utilisateur);
     }
 
-    public Utilisateurs authenticateUser(String email, String password) {
-        Utilisateurs utilisateur = utilisateursRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-        if (!passwordEncoder.matches(password, utilisateur.getPassword())) {
-            throw new RuntimeException("Mot de passe incorrect");
-        }
-
-        return utilisateur;
+    public Utilisateurs findByEmail(String email) {
+        return utilisateursRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
+
     public Utilisateurs findByemail(String email) {
         return utilisateursRepository.findByemail(email);  // Fetch user by email from repository
     }

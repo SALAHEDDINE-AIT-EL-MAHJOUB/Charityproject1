@@ -1,28 +1,65 @@
 package org.example.charityproject1.service;
 
+import org.example.charityproject1.model.Organisations;
+import org.example.charityproject1.model.SuperAdmin;
 import org.example.charityproject1.model.Utilisateurs;
+import org.example.charityproject1.repository.OrganisationsRepository;
+import org.example.charityproject1.repository.SuperAdminRepository;
 import org.example.charityproject1.repository.UtilisateursRepository;
-import org.example.charityproject1.security.RegularUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Optional;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UtilisateursRepository utilisateursRepository;
+    private final UtilisateursRepository utilisateursRepository;
+    private final SuperAdminRepository superAdminRepository;
+    private final OrganisationsRepository organisationsRepository;
+
+    public CustomUserDetailsService(UtilisateursRepository utilisateursRepository, SuperAdminRepository superAdminRepository, OrganisationsRepository organisationsRepository) {
+        this.utilisateursRepository = utilisateursRepository;
+        this.superAdminRepository = superAdminRepository;
+        this.organisationsRepository = organisationsRepository;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Utilisateurs utilisateur = utilisateursRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Try to load a regular user
+        Optional<Utilisateurs> user = utilisateursRepository.findByEmail(username);
+        if (user.isPresent()) {
+            return new User(
+                    user.get().getEmail(),
+                    user.get().getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
+            );
+        }
 
-        // Return a RegularUserDetails instance for a regular user
-        return new RegularUserDetails(utilisateur.getEmail(), utilisateur.getPassword());
+        // Try to load a SuperAdmin
+        Optional<SuperAdmin> superAdmin = superAdminRepository.findByEmail(username);
+        if (superAdmin.isPresent()) {
+            return new User(
+                    superAdmin.get().getEmail(),
+                    superAdmin.get().getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_SUPER_ADMIN"))
+            );
+        }
+
+        // Try to load an organisation
+        Optional<Organisations> organisation = organisationsRepository.findByNumeroIdentif(username);
+        if (organisation.isPresent()) {
+            return new User(
+                    organisation.get().getNumeroIdentif(),
+                    organisation.get().getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_ORGANISATION"))
+            );
+        }
+
+        throw new UsernameNotFoundException("User not found with username: " + username);
     }
 }
-

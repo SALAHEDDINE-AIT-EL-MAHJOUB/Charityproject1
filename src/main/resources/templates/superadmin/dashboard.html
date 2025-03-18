@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Organisations</title>
+    <style>
+        /* Your CSS remains unchanged */
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Gestion des Organisations</h1>
+
+    <div class="navigation">
+        <a th:href="@{/superadmin/dashboard}">Dashboard</a>
+        <a th:href="@{/superadmin/organisations}">Gestion des Organisations</a>
+        <a th:href="@{/superadmin/charities}">Gestion des Charités</a>
+    </div>
+
+    <!-- Fixed isEmpty check -->
+    <div th:if="${#lists.isEmpty(organisations)}">
+        <p>Aucune organisation n'a été trouvée.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(organisations)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Logo</th>
+                <th>Nom</th>
+                <th>Numéro d'Identification</th>
+                <th>Adresse</th>
+                <th>Description</th>
+                <th>Validé</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="org : ${organisations}">
+                <td>
+                    <!-- Fixed logo check -->
+                    <img th:if="${org.logo != null && org.logo != ''}"
+                         th:src="'data:image/png;base64,' + ${org.logo}"
+                         class="logo-img" alt="Logo"/>
+                    <span th:if="${org.logo == null || org.logo == ''}">No Logo</span>
+                </td>
+                <td th:text="${org.nom}">Organisation Name</td>
+                <td th:text="${org.numeroIdentif}">ID123</td>
+                <td th:text="${org.adresseLegale}">Address</td>
+                <td th:text="${org.description}">Description</td>
+                <td th:text="${org.valideParAdmin ? 'Oui' : 'Non'}">Non</td>
+                <td class="actions">
+                    <!-- Fixed onclick attribute syntax -->
+                    <button th:if="${!org.valideParAdmin}" class="validate"
+                            th:onclick="'validateOrganisation(\'' + ${org.numeroIdentif} + '\')'">Valider</button>
+                    <button class="delete"
+                            th:onclick="'deleteOrganisation(\'' + ${org.numeroIdentif} + '\')'">Supprimer</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Fixed inline JavaScript -->
+<script>
+    function validateOrganisation(id) {
+        if (confirm('Êtes-vous sûr de vouloir valider cette organisation ?')) {
+            fetch('/superadmin/api/organisations/' + id + '/validate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Organisation validée avec succès!');
+                        location.reload();
+                    } else {
+                        alert('Erreur lors de la validation de l\'organisation');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erreur lors de la validation de l\'organisation');
+                });
+        }
+    }
+
+    function deleteOrganisation(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette organisation ?')) {
+            fetch('/superadmin/api/organisations/' + id, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Organisation supprimée avec succès!');
+                        location.reload();
+                    } else {
+                        alert('Erreur lors de la suppression de l\'organisation');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erreur lors de la suppression de l\'organisation');
+                });
+        }
+    }
+</script>
+</body>
+</html>
