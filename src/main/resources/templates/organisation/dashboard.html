@@ -8,6 +8,368 @@
     <!-- Adding Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <!-- Modal Styles -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #1e3c72, #2a5298); /* Dégradé bleu */
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .navbar-left, .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-circle img {
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .org-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #f1f1f1;
+        }
+
+        .notification-icon {
+            font-size: 1.5em;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .notification-icon:hover {
+            color: #f39c12; /* Couleur orange au survol */
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .param-icon {
+            font-size: 1.5em;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .param-icon:hover {
+            color: #f39c12; /* Couleur orange au survol */
+        }
+
+        .sub-navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #ffffff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-top: 10px;
+        }
+
+        .sub-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #555;
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 0 15px;
+            min-width: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .sub-nav-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .actions-list {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .actions-list h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Nouveaux styles pour le formulaire d'action */
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .action-form-header {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .action-form-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+        }
+
+        .form-submit-btn {
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .form-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-submit-btn i {
+            margin-right: 8px;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* Styles for action buttons */
+        .action-buttons {
+            white-space: nowrap;
+            text-align: center;
+        }
+        
+        .btn-archive, .btn-delete {
+            border: none;
+            padding: 8px 12px;
+            margin: 0 3px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-archive {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-archive:hover {
+            background-color: #d68910;
+            transform: translateY(-2px);
+        }
+        
+        .btn-delete:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body th:data-password-error="${passwordError}" th:data-profile-error="${profileError}">
 <!-- Main Navigation Bar -->
@@ -44,193 +406,180 @@
 
 <!-- Sub Navigation with Rectangles -->
 <div class="sub-navbar">
-    <a href="#section1" class="sub-nav-item">
-        <i class="fas fa-chart-line"></i>
-        <span>Tableau de bord</span>
-    </a>
-    <a href="#section2" class="sub-nav-item">
+    <a href="/organisation/dashboard" class="sub-nav-item" id="active-actions-btn">
         <i class="fas fa-tasks"></i>
-        <span>Lancer des Actions</span>
+        <span>Actions Actives</span>
     </a>
-    <a href="#section3" class="sub-nav-item">
-        <i class="fas fa-users"></i>
-        <span>Actions Archivees</span>
+    <a href="/organisation/actions/archived" class="sub-nav-item">
+        <i class="fas fa-archive"></i>
+        <span>Actions Archivées</span>
+    </a>
+    <a href="#section2" class="sub-nav-item" id="create-action-btn">
+        <i class="fas fa-plus-circle"></i>
+        <span>Lancer des Actions</span>
     </a>
 </div>
 
-<!-- Profile Modal -->
-<div id="profileModal" class="modal">
+<!-- Include the profile modal fragment -->
+<div th:replace="~{organisation/profile/profileModal :: profileModal}"></div>
+
+<!-- Formulaire Modal -->
+<div id="actionFormModal" class="modal" style="display: none;">
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close-button" id="closeModal">&times;</span>
+        <h2>Lancer une Action</h2>
+        <form th:action="@{/organisation/actions}" method="post">
+            <label for="titre">Titre :</label>
+            <input type="text" id="titre" name="titre" required>
 
-        <!-- Profile View -->
-        <div id="profileView">
-            <div class="profile-header">
-                <h2>Profil de l'Organisation</h2>
-                <div class="profile-actions">
-                    <button id="modifyBtn" class="action-btn"><i class="fas fa-edit"></i> Modifier</button>
-                    <button id="passwordBtn" class="action-btn"><i class="fas fa-key"></i> Modifier mot de passe</button>
-                </div>
-            </div>
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" required></textarea>
 
-            <div class="profile-body">
-                <div class="profile-logo">
-                    <img th:if="${organisation.logo}" th:src="'data:image/png;base64,' + ${organisation.logo}" alt="Logo de l'organisation">
-                    <img th:unless="${organisation.logo}" src="https://via.placeholder.com/200" alt="Logo par défaut">
-                </div>
+            <label for="date">Date :</label>
+            <input type="date" id="date" name="date" required>
 
-                <div class="profile-details">
-                    <div class="detail-item">
-                        <span class="label">Nom:</span>
-                        <span class="value" th:text="${organisation.nom}">Nom de l'Organisation</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Numéro d'identification:</span>
-                        <span class="value" th:text="${organisation.numeroIdentif}">123456</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Adresse légale:</span>
-                        <span class="value" th:text="${organisation.adresseLegale}">Adresse de l'organisation</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Description:</span>
-                        <span class="value description" th:text="${organisation.description}">Description de l'organisation...</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Contact Principal:</span>
-                        <span class="value " th:text="${organisation.contactPrincipal}">Contact Principal</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <label for="lieu">Lieu :</label>
+            <input type="text" id="lieu" name="lieu" required>
 
-        <!-- Edit Profile Form -->
-        <div id="editProfileForm" style="display: none;">
-            <div class="profile-header">
-                <h2>Modifier le Profil</h2>
-            </div>
+            <label for="objectifCollecte">Objectif de Collecte :</label>
+            <input type="number" id="objectifCollecte" name="objectifCollecte" required>
 
-            <!-- Error message display -->
-            <div th:if="${profileErrorMessage}" class="alert alert-danger" role="alert"
-                 th:text="${profileErrorMessage}" style="color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; padding: 0.75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: 0.25rem;">
-            </div>
-
-            <form id="orgProfileForm" th:action="@{/organisation/update-profile}" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="orgName">Nom de l'Organisation</label>
-                    <input type="text" id="orgName" name="nom" th:value="${organisation.nom}" required
-                           th:class="${profileError == 'name-invalid'} ? 'is-invalid' : ''"
-                           style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ced4da;">
-                    <div th:if="${profileError == 'name-invalid'}"
-                         style="color: #dc3545; font-size: 0.875em; margin-top: 0.25rem;">
-                        Le nom de l'organisation est obligatoire.
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="orgId">Numéro d'identification</label>
-                    <input type="text" id="orgId" name="numeroIdentif" th:value="${organisation.numeroIdentif}" required
-                           th:class="${profileError == 'id-empty' || profileError == 'id-exists'} ? 'is-invalid' : ''"
-                           style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ced4da;">
-                    <div th:if="${profileError == 'id-empty'}"
-                         style="color: #dc3545; font-size: 0.875em; margin-top: 0.25rem;">
-                        Le numéro d'identification est obligatoire.
-                    </div>
-                    <div th:if="${profileError == 'id-exists'}"
-                         style="color: #dc3545; font-size: 0.875em; margin-top: 0.25rem;">
-                        Ce numéro d'identification est déjà utilisé.
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="orgAddress">Adresse légale</label>
-                    <input type="text" id="orgAddress" name="adresseLegale" th:value="${organisation.adresseLegale}" required
-                           th:class="${profileError == 'address-invalid'} ? 'is-invalid' : ''"
-                           style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ced4da;">
-                    <div th:if="${profileError == 'address-invalid'}"
-                         style="color: #dc3545; font-size: 0.875em; margin-top: 0.25rem;">
-                        L'adresse légale est obligatoire.
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="orgDescription">Description</label>
-                    <textarea id="orgDescription" name="description" rows="4" th:text="${organisation.description}" required
-                              th:class="${profileError == 'description-invalid'} ? 'is-invalid' : ''"
-                              style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ced4da;"></textarea>
-                    <div th:if="${profileError == 'description-invalid'}"
-                         style="color: #dc3545; font-size: 0.875em; margin-top: 0.25rem;">
-                        La description est obligatoire.
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="contactPrincipal">Contact Principal</label>
-                    <input type="text" id="contactPrincipal" name="contactprincipal" th:value="${organisation.contactPrincipal}" required
-                           th:class="${profileError == 'contact-invalid'} ? 'is-invalid' : ''"
-                           style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ced4da;">
-                    <div th:if="${profileError == 'contact-invalid'}"
-                         style="color: #dc3545; font-size: 0.875em; margin-top: 0.25rem;">
-                        Le contact principal est obligatoire.
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="orgLogo">Logo</label>
-                    <div class="logo-upload">
-                        <div class="current-logo" style="width: 200px; height: 200px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
-                            <img th:if="${organisation.logo}" th:src="'data:image/png;base64,' + ${organisation.logo}" alt="Logo actuel" style="width: 100%; height: 100%; object-fit: contain;">
-                            <img th:unless="${organisation.logo}" src="https://via.placeholder.com/200" alt="Logo par défaut" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                        <input type="file" id="orgLogo" name="logoFile" accept="image/*"
-                               th:class="${profileError == 'logo-invalid'} ? 'is-invalid' : ''">
-                        <div th:if="${profileError == 'logo-invalid'}"
-                             style="color: #dc3545; font-size: 0.875em; margin-top: 0.25rem;">
-                            Le format ou la taille du logo est invalide.
-                        </div>
-                        <p class="file-hint" style="color: #666; font-size: 0.85em; margin-top: 5px;">Formats acceptés: JPG, PNG. Taille max: 2MB</p>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Enregistrer</button>
-                    <button type="button" id="cancelEditBtn" class="cancel-btn"><i class="fas fa-times"></i> Annuler</button>
-                </div>
-            </form>
-        </div>
-        <!-- Password Form -->
-        <div id="passwordForm" style="display: none;">
-            <div class="profile-header">
-                <h2>Modifier le Mot de Passe</h2>
-            </div>
-            <div th:if="${errorMessage}" class="alert alert-danger" role="alert"
-                 th:text="${errorMessage}">
-            </div>
-            <form id="changePasswordForm" th:action="@{/organisation/change-password}" method="post">
-                <div class="form-group">
-                    <label for="currentPassword">Mot de passe actuel</label>
-                    <input type="password" id="currentPassword" name="currentPassword" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="newPassword">Nouveau mot de passe</label>
-                    <input type="password" id="newPassword" name="newPassword" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirmer le mot de passe</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn"><i class="fas fa-key"></i> Modifier mot de passe</button>
-                    <button type="button" id="cancelPasswordBtn" class="cancel-btn"><i class="fas fa-times"></i> Annuler</button>
-                </div>
-            </form>
-        </div>
+            <button type="submit">Lancer</button>
+        </form>
     </div>
 </div>
 
+<div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<div class="actions-list">
+    <h2>Actions Existantes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Lieu</th>
+                <th>Objectif de Collecte</th>
+                <th>Montant Actuel</th>
+                <th>Participants</th>
+                <th>Actions</th> <!-- New column header -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${actions == null || actions.empty}">
+                <td colspan="8" style="text-align: center;">Aucune action n'a été créée</td>
+            </tr>
+            <tr th:each="action : ${actions}">
+                <td th:text="${action.titre}">Titre de l'action</td>
+                <td th:text="${action.description}">Description de l'action</td>
+                <td th:text="${#temporals.format(action.date, 'dd/MM/yyyy')}">Date de l'action</td>
+                <td th:text="${action.lieu}">Lieu de l'action</td>
+                <td th:text="${action.objectifCollecte + ' DH'}">Objectif de collecte</td>
+                <td th:text="${action.montantActuel + ' DH'}">0 DH</td>
+                <td th:text="${action.nombreParticipants}">0</td>
+                <td class="action-buttons">
+                    <form th:action="@{/organisation/actions/{id}/archive(id=${action.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn-archive" title="Archiver cette action">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                    </form>
+                    <form th:action="@{/organisation/actions/{id}/delete(id=${action.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn-delete" title="Supprimer cette action">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- After the existing actions-list div -->
+
+<div class="actions-list" th:if="${showArchived}" id="archived-actions-section">
+    <h2>Actions Archivées</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Lieu</th>
+                <th>Objectif de Collecte</th>
+                <th>Montant Collecté</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${archivedActions == null || archivedActions.empty}">
+                <td colspan="7" style="text-align: center;">Aucune action archivée</td>
+            </tr>
+            <tr th:each="action : ${archivedActions}">
+                <td th:text="${action.titre}">Titre de l'action</td>
+                <td th:text="${action.description}">Description de l'action</td>
+                <td th:text="${#temporals.format(action.date, 'dd/MM/yyyy')}">Date de l'action</td>
+                <td th:text="${action.lieu}">Lieu de l'action</td>
+                <td th:text="${action.objectifCollecte + ' DH'}">Objectif de collecte</td>
+                <td th:text="${action.montantCollecte + ' DH'}">0 DH</td>
+                <td class="action-buttons">
+                    <form th:action="@{/organisation/actions/{id}/delete(id=${action.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn-delete" title="Supprimer cette action">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 <script th:src="@{/js/dashboard.js}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("actionFormModal");
+        const openButton = document.querySelector(".sub-nav-item[href='#section2']");
+        const closeButton = document.getElementById("closeModal");
+
+        openButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            modal.style.display = "block";
+        });
+
+        closeButton.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add confirmation to archive and delete buttons
+        const archiveForms = document.querySelectorAll('form[action*="/archive"]');
+        const deleteForms = document.querySelectorAll('form[action*="/delete"]');
+        
+        archiveForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                if (!confirm('Êtes-vous sûr de vouloir archiver cette action?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+        
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                if (!confirm('Êtes-vous sûr de vouloir supprimer définitivement cette action? Cette opération est irréversible.')) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

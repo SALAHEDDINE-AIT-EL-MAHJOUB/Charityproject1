@@ -32,7 +32,8 @@ public class ActionCharite {
     @Positive(message = "L'objectif de collecte doit être positif")
     private float objectifCollecte;
 
-    @PositiveOrZero(message = "Le montant actuel ne peut pas être négatif")
+    private String organisationId;
+
     private float montantActuel;
 
     private int nombreParticipants; // Suivi du nombre de participants
@@ -45,7 +46,7 @@ public class ActionCharite {
 
     private List<Utilisateurs> listUsersContribue;
     private List<Don> listedons;
-    private String OrganisationId;
+
     // Getters et setters
     public String getIdAction() {
         return idAction;
@@ -151,11 +152,11 @@ public class ActionCharite {
     }
 
     public String getOrganisationId() {
-        return OrganisationId;
+        return organisationId;
     }
 
     public void setOrganisationId(String organisationId) {
-        OrganisationId = organisationId;
+        this.organisationId = organisationId;
     }
 
     // Méthode pour ajouter un like

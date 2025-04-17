@@ -11,7 +11,9 @@ import java.util.List;
 public class Organisations {
 
     @Id
-    private String idOrganisation; // Use String for MongoDB ObjectId compatibility
+    private String id; // Use String for MongoDB ObjectId compatibility
+
+    private Long idOrganisation;
 
     @NotBlank(message = "Le nom de l'organisation est obligatoire")
     @Size(max = 100, message = "Le nom de l'organisation ne doit pas dépasser 100 caractères")
@@ -45,11 +47,19 @@ public class Organisations {
 
     private List<ActionCharite> archivedActionsCharite;
     // Getters and setters
-    public String getIdOrganisation() {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Long getIdOrganisation() {
         return idOrganisation;
     }
 
-    public void setIdOrganisation(String idOrganisation) {
+    public void setIdOrganisation(Long idOrganisation) {
         this.idOrganisation = idOrganisation;
     }
 

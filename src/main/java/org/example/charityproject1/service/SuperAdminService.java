@@ -48,7 +48,6 @@ public class SuperAdminService {
     public void deleteOrganisation(String id) {
         System.out.println("Attempting to delete organisation with ID: " + id);
 
-        // Try different approaches to find and delete
         try {
             // First try to find by numeroIdentif
             Optional<Organisations> orgOptional = organisationsRepository.findByNumeroIdentif(id);
@@ -57,9 +56,9 @@ public class SuperAdminService {
                 Organisations org = orgOptional.get();
                 System.out.println("Found organization by numeroIdentif: " + org.getNom());
 
-                // Delete by the MongoDB ID
-                organisationsRepository.deleteById(org.getIdOrganisation());
-                System.out.println("Organization deleted by ID: " + org.getIdOrganisation());
+                // Delete by the MongoDB String ID
+                organisationsRepository.deleteById(org.getId()); // Use the `id` field instead of `getIdOrganisation()`
+                System.out.println("Organization deleted by ID: " + org.getId());
             } else {
                 // If not found by numeroIdentif, try by MongoDB _id directly
                 try {
