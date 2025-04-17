@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="profileModal" id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+
+        <!-- Profile View -->
+        <div id="profileView">
+            <div class="profile-header">
+                <h2>Profil de l'Organisation</h2>
+                <div class="profile-actions">
+                    <button id="modifyBtn" class="action-btn"><i class="fas fa-edit"></i> Modifier</button>
+                    <button id="passwordBtn" class="action-btn"><i class="fas fa-key"></i> Modifier mot de passe</button>
+                </div>
+            </div>
+
+            <div class="profile-body">
+                <div class="profile-logo">
+                    <img th:if="${organisation.logo}" th:src="'data:image/png;base64,' + ${organisation.logo}" alt="Logo de l'organisation">
+                    <img th:unless="${organisation.logo}" src="https://via.placeholder.com/200" alt="Logo par défaut">
+                </div>
+
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <span class="label">Nom:</span>
+                        <span class="value" th:text="${organisation.nom}">Nom de l'Organisation</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Numéro d'identification:</span>
+                        <span class="value" th:text="${organisation.numeroIdentif}">123456</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Adresse légale:</span>
+                        <span class="value" th:text="${organisation.adresseLegale}">Adresse de l'organisation</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Description:</span>
+                        <span class="value description" th:text="${organisation.description}">Description de l'organisation...</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Contact Principal:</span>
+                        <span class="value" th:text="${organisation.contactPrincipal}">Contact Principal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Include the edit profile form fragment -->
+        <div th:replace="~{organisation/profile/editProfileForm :: editProfileForm}"></div>
+
+        <!-- Include the password change form fragment -->
+        <div th:replace="~{organisation/profile/passwordForm :: passwordForm}"></div>
+    </div>
+</div>
+</body>
+</html>

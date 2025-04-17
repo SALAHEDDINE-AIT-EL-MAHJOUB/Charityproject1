@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actions - Organisation</title>
+    <link rel="stylesheet" th:href="@{/styles/dashboard.css}">
+</head>
+<body>
+    <h1>Liste des Actions</h1>
+
+    <div class="actions-list">
+        <h2>Actions Existantes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Lieu</th>
+                    <th>Objectif de Collecte</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="action : ${actions}">
+                    <td th:text="${action.titre}">Titre de l'action</td>
+                    <td th:text="${action.description}">Description de l'action</td>
+                    <td th:text="${#dates.format(action.date, 'dd/MM/yyyy')}">Date de l'action</td>
+                    <td th:text="${action.lieu}">Lieu de l'action</td>
+                    <td th:text="${action.objectifCollecte}">Objectif de collecte</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
